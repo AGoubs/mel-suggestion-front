@@ -9,7 +9,7 @@
           <Search />
         </div>
         <div class="px-6 overflow-x-auto">
-          <Suggestions />
+          <Suggestions :suggestions="suggestions" />
         </div>
       </div>
     </div>
@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 import Header from "./components/Header";
 import SortingButton from "./components/SortingButton";
 import Search from "./components/Search";
@@ -25,11 +27,24 @@ import Suggestions from "./components/Suggestions";
 
 export default {
   name: "App",
+  data() {
+    return {
+      suggestions: [],
+    };
+  },
   components: {
     Header,
     SortingButton,
     Search,
     Suggestions,
+  },
+   mounted() {
+    axios
+      .get("http://127.0.0.1:8000/api/suggestions")
+      .then((response) => {
+        this.suggestions = response.data;
+      })
+      .catch();
   },
 };
 </script>

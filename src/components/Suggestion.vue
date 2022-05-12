@@ -3,7 +3,7 @@
     <td>
       <div class="flex items-center">
         <div class="bg-gray-100 rounded-sm p-2.5">
-          <p class="text-center text-lg font-bold">0</p>
+          <p class="text-center text-lg font-bold">{{nbVotes}}</p>
           <p>Votes</p>
         </div>
         <div class="pl-3">
@@ -35,6 +35,7 @@ export default {
   props: {
     title: String,
     description: String,
+    nbVotes: Number,
   },
 };
 </script>
