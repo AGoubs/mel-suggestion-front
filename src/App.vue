@@ -8,7 +8,7 @@
           <SortingButton />
           <Search />
         </div>
-        <div class="px-6 overflow-x-auto">
+        <div class="px-6">
           <Suggestions :suggestions="suggestions" />
         </div>
       </div>
@@ -43,6 +43,7 @@ export default {
       .get("http://127.0.0.1:8000/api/suggestions")
       .then((response) => {
         this.suggestions = response.data;
+        console.log(this.suggestions);
       })
       .catch();
   },
