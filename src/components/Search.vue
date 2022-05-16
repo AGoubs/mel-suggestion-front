@@ -8,7 +8,7 @@
     <input
       type="text"
       placeholder="Rechercher"
-      class="px-3 py-2 placeholder-slate-300 text-slate-600 relative bg-white bg-white rounded text-sm border border-slate-300 outline-none focus:outline-none focus:ring pl-10"
+      class="px-3 py-2 placeholder-slate-300 text-slate-600 relative bg-white bg-white rounded text-sm border border-gray-300 outline-none focus:outline-none focus:ring pl-10"
     />
   </div>
 </template>

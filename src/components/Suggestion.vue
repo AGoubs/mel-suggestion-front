@@ -2,7 +2,7 @@
   <tr tabindex="0" class="focus:outline-none">
     <td>
       <div class="flex items-center">
-        <div class="bg-gray-100 rounded-sm p-2.5">
+        <div class="bg-gray-300 rounded-sm p-2.5">
           <p class="text-center text-lg font-bold">{{nbVotes}}</p>
           <p>Votes</p>
         </div>

@@ -3,8 +3,8 @@
   <body class="flex items-center justify-center py-8">
     <div class="w-full max-w-4xl px-4">
       <Header title="Faire une suggestion" />
-      <div class="border rounded-lg border pb-6 border-gray-200">
-        <div class="flex items-center border-b border-gray-200 justify-between px-6 py-3">
+      <div class="border rounded-lg border pb-6 border-gray-300">
+        <div class="flex items-center border-b border-gray-300 justify-between px-6 py-3">
           <SortingButton />
           <Search />
         </div>
