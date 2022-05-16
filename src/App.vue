@@ -6,7 +6,7 @@
       <div class="border rounded-lg border pb-6 border-gray-200">
         <div class="flex items-center border-b border-gray-200 justify-between px-6 py-3">
           <SortingButton />
-          <Search />
+          <Search @add-suggestion="addSuggestion"/>
         </div>
         <div class="px-6 overflow-x-auto">
           <Suggestions :suggestions="suggestions" />
@@ -39,13 +39,24 @@ export default {
     Suggestions,
   },
    mounted() {
-    axios
-      .get("http://127.0.0.1:8000/api/suggestions")
+    axios.get("api/suggestions")
       .then((response) => {
         this.suggestions = response.data;
       })
       .catch();
   },
+  methods: {
+    addSuggestion(newSuggestion) {
+      console.log(newSuggestion);
+      axios.post("api/suggestions", {
+        title: newSuggestion.title,
+        description: newSuggestion.description,
+        user_email: 'Arnaud@goubier.fr',
+        state: 'validate'
+      })
+      this.suggestions = [...this.suggestions, newSuggestion]
+    }
+  }
 };
 </script>
 
