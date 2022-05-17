@@ -20,7 +20,8 @@
               </div>
 
               <div v-else>
-                <Suggestions @add-suggestion="addSuggestion" :suggestions="suggestions" />
+                <Suggestions @add-suggestion="addSuggestion" @delete-suggestion="deleteSuggestion"
+                  @update-suggestion="updateSuggestion" :suggestions="suggestions" />
               </div>
             </section>
           </div>
@@ -70,7 +71,23 @@ export default {
         user_email: 'Arnaud@goubier.fr',
         state: 'validate'
       }).then((response) => {
+        response.data.my_vote = true;
         this.suggestions = [...this.suggestions, response.data]
+      })
+    },
+    deleteSuggestion(id) {
+      let idx = this.suggestions.indexOf(id)
+      this.suggestions.splice(idx, 1)
+      axios.delete(`http://127.0.0.1:8000/api/suggestions/${id}`).catch((error) => {
+        console.log(error);
+      })
+    },
+    updateSuggestion(suggestion) {
+      axios.put(`http://127.0.0.1:8000/api/suggestions/${suggestion.id}`, {
+        title: suggestion.title,
+        description: suggestion.description,
+      }).catch((error) => {
+        console.log(error);
       })
     }
   },

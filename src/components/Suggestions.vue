@@ -3,7 +3,7 @@
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <tbody>
         <div v-for="suggestion in sortedSuggestions" :key="suggestion.id" class="pt-5">
-          <Suggestion :suggestion="suggestion" />
+          <Suggestion @delete-suggestion="deleteSuggestion" @update-suggestion="updateSuggestion" :suggestion="suggestion" />
           <hr class="mt-5" />
         </div>
       </tbody>
@@ -73,11 +73,18 @@ export default {
       this.$root.$emit('sort-suggestion-active', this.sortBy)
       this.$emit('add-suggestion', newSuggestion);
     },
+    deleteSuggestion(id) {
+      this.$emit('delete-suggestion', id);
+    },
+    updateSuggestion(suggestion) {
+      this.$emit('update-suggestion', suggestion);
+    },
     showCreateSuggestion() {
       this.create = !this.create
     },
     resetSearch() {
       this.search = "";
+      this.$root.$emit('reset-search-text');
     }
   },
   computed: {

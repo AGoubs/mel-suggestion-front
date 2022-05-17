@@ -29,6 +29,11 @@ export default {
       this.$root.$emit('reset-search')
       this.search = ""
     }
+  },
+  mounted() {
+    this.$root.$on('reset-search-text', () => {
+      this.search = ""
+    })
   }
 };
 </script>

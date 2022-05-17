@@ -15,7 +15,7 @@
                 text-gray-700
                 leading-tight
                 focus:outline-none focus:shadow-outline
-              " id="title" v-model="title" type="text" placeholder="Titre..."
+              " id="title" v-model="localSuggestion.title" type="text" placeholder="Titre..."
         :class="titleError ? 'border-red-500' : ''" />
       <span class="text-red-500" v-show="titleError">Merci de renseigner un titre</span>
     </div>
@@ -35,8 +35,8 @@
                 mb-3
                 leading-tight
                 focus:outline-none focus:shadow-outline
-              " rows="5" id="description" v-model="description" type="text" placeholder="description..."
-        :class="descriptionError ? 'border-red-500' : ''" />
+              " rows="5" id="description" v-model="localSuggestion.description" type="text"
+        placeholder="description..." :class="descriptionError ? 'border-red-500' : ''" />
       <span class="text-red-500" v-show="descriptionError">Merci de renseigner une description</span>
     </div>
     <div class="flex items-center justify-between">
@@ -58,55 +58,39 @@
 
 <script>
 export default {
-  name: "CreateSuggestion",
+  name: "FormSuggestion",
   props: {
-    titleprops: String
+    suggestion: Object,
   },
   data() {
     return {
-      title: this.titleprops,
+      localSuggestion: this.suggestion,
       titleError: false,
-      description: this.descriptionprops,
       descriptionError: false,
     };
-  },
-  watch: {
-    titleprops(newVal) {
-      this.title = newVal;
-    },
   },
   methods: {
     onSubmit(e) {
       e.preventDefault();
 
-      if (!this.title) {
+      if (!this.localSuggestion.title) {
         this.titleError = true
         return
-      }
-      else {
+      } else {
         this.titleError = false
       }
 
-      if (!this.description) {
+      if (!this.localSuggestion.description) {
         this.descriptionError = true
         return
       }
+      
+      this.$emit("update-suggestion", this.localSuggestion);
 
-      const newSuggestion = {
-        title: this.title,
-        description: this.description,
-        nb_votes: 0,
-      };
-
-      this.title = "";
-      this.description = "";
-
-      this.$emit("add-suggestion", newSuggestion);
     },
   },
-  emits: ['add-suggestion']
-};
+  emits: [
+    'update-suggestion'
+  ]
+}
 </script>
-
-<style>
-</style>
