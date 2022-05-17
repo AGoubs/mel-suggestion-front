@@ -1,20 +1,33 @@
 <template>
-<div>
-  <body class="flex items-center justify-center py-8">
-    <div class="w-full max-w-4xl px-4">
-      <Header title="Faire une suggestion" />
-      <div class="border rounded-lg border pb-6 border-gray-300">
-        <div class="flex items-center border-b border-gray-300 justify-between px-6 py-3">
-          <SortingButton />
-          <Search />
-        </div>
-        <div class="px-6">
-          <Suggestions :suggestions="suggestions" />
+  <div>
+
+    <body class="flex items-center justify-center py-8">
+      <div class="w-full max-w-4xl px-4">
+        <Header title="Faire une suggestion" />
+        <div class="border rounded-lg border pb-6 border-gray-300">
+          <div class="flex items-center border-b border-gray-300 justify-between px-6 py-3">
+            <SortingButton />
+            <Search />
+          </div>
+          <div class="px-6">
+            <section v-if="errored" class="flex justify-center my-3">
+              <p>Une erreur s'est produite lors du chargement des données</p>
+            </section>
+
+            <section v-else>
+              <div v-if="loading">
+                <Preloader color="gray" />
+              </div>
+
+              <div v-else>
+                <Suggestions @add-suggestion="addSuggestion" :suggestions="suggestions" />
+              </div>
+            </section>
+          </div>
         </div>
       </div>
-    </div>
-  </body>
-</div>
+    </body>
+  </div>
 </template>
 
 <script>
@@ -24,28 +37,49 @@ import Header from "./components/Header";
 import SortingButton from "./components/SortingButton";
 import Search from "./components/Search";
 import Suggestions from "./components/Suggestions";
+import Preloader from './components/Preloader.vue'
 
 export default {
   name: "App",
   data() {
     return {
       suggestions: [],
+      loading: true,
+      errored: false
     };
+  },
+  mounted() {
+    axios
+      .get("http://127.0.0.1:8000/api/suggestions")
+      .then((response) => {
+        this.suggestions = response.data;
+      })
+      .catch(error => {
+        console.log(error)
+        this.errored = true
+      })
+      .finally(() => {
+        this.loading = false
+      })
+  },
+  methods: {
+    addSuggestion(newSuggestion) {
+      axios.post("http://127.0.0.1:8000/api/suggestions", {
+        title: newSuggestion.title,
+        description: newSuggestion.description,
+        user_email: 'Arnaud@goubier.fr',
+        state: 'validate'
+      }).then((response) => {
+        this.suggestions = [...this.suggestions, response.data]
+      })
+    }
   },
   components: {
     Header,
     SortingButton,
     Search,
     Suggestions,
-  },
-   mounted() {
-    axios
-      .get("http://127.0.0.1:8000/api/suggestions")
-      .then((response) => {
-        this.suggestions = response.data;
-        console.log(this.suggestions);
-      })
-      .catch();
+    Preloader
   },
 };
 </script>

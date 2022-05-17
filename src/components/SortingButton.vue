@@ -24,6 +24,11 @@ export default {
       sortDirection: 'desc',
     }
   },
+  mounted() {
+      this.$root.$on('sort-suggestion-active', (e) => {
+        this.sortBy = e
+      })
+  },
   methods: {
     sort(sorting)
     {
