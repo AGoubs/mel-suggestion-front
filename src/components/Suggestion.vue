@@ -26,12 +26,6 @@
                 {{ suggestion.title }}
               </p>
             </div>
-
-            <!-- <div class="ql-snow" v-if="description">
-              <div class="ql-editor">
-                <div v-html="suggestion.description"></div>
-              </div>
-            </div>-->
             <div :class="description ? 'invisible' : 'visible'" class="overflow-hidden truncate custom_width">
               <span>{{ suggestion.description | strippedContent }}</span>
             </div>
@@ -106,8 +100,9 @@ export default {
       }
       else {
         this.suggestion.nb_votes--
-        if (!this.suggestion.voted) {
+        if (this.suggestion.vote_id) {
           this.voteId = this.suggestion.vote_id;
+          delete this.suggestion.vote_id;
         }
         axios.delete(`http://127.0.0.1:8000/api/votes/${this.voteId}`).catch((error) => {
           console.log(error);
