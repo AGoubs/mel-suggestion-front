@@ -2,9 +2,9 @@
   <div class="relative overflow-x-auto sm:rounded-lg">
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <tbody>
-        <div v-for="suggestion in sortedSuggestions" :key="suggestion.id" class="pt-5">
+        <div v-for="suggestion in sortedSuggestions" :key="suggestion.id">
           <Suggestion @delete-suggestion="deleteSuggestion" @update-suggestion="updateSuggestion" :suggestion="suggestion" />
-          <hr class="mt-5" />
+          <hr />
         </div>
       </tbody>
     </table>

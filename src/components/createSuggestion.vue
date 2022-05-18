@@ -23,7 +23,7 @@
       <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
         Description
       </label>
-      <textarea class="
+      <!-- <textarea class="
                 shadow
                 appearance-none
                 border
@@ -36,7 +36,9 @@
                 leading-tight
                 focus:outline-none focus:shadow-outline
               " rows="5" id="description" v-model="description" type="text" placeholder="description..."
-        :class="descriptionError ? 'border-red-500' : ''" />
+        :class="descriptionError ? 'border-red-500' : ''" /> -->
+        <vue-editor v-model="description"></vue-editor>
+
       <span class="text-red-500" v-show="descriptionError">Merci de renseigner une description</span>
     </div>
     <div class="flex items-center justify-between">
@@ -57,6 +59,8 @@
 </template>
 
 <script>
+import { VueEditor } from "vue2-editor";
+
 export default {
   name: "CreateSuggestion",
   props: {
@@ -104,9 +108,16 @@ export default {
       this.$emit("add-suggestion", newSuggestion);
     },
   },
+  components: {
+    VueEditor
+  },
   emits: ['add-suggestion']
 };
 </script>
 
-<style>
+<style scoped>
+.ql-editor {
+  padding: 12px 20px 12px 0px;
+  min-height: auto;
+}
 </style>

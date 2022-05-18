@@ -9,7 +9,7 @@
             <SortingButton />
             <Search />
           </div>
-          <div class="px-6">
+          <div>
             <section v-if="errored" class="flex justify-center my-3">
               <p>Une erreur s'est produite lors du chargement des données</p>
             </section>

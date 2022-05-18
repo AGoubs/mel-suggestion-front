@@ -23,7 +23,7 @@
       <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
         Description
       </label>
-      <textarea class="
+      <!-- <textarea class="
                 shadow
                 appearance-none
                 border
@@ -36,7 +36,8 @@
                 leading-tight
                 focus:outline-none focus:shadow-outline
               " rows="5" id="description" v-model="localSuggestion.description" type="text"
-        placeholder="description..." :class="descriptionError ? 'border-red-500' : ''" />
+        placeholder="description..." :class="descriptionError ? 'border-red-500' : ''" /> -->
+        <vue-editor v-model="localSuggestion.description"></vue-editor>
       <span class="text-red-500" v-show="descriptionError">Merci de renseigner une description</span>
     </div>
     <div class="flex items-center justify-between">
@@ -57,6 +58,8 @@
 </template>
 
 <script>
+import { VueEditor } from "vue2-editor";
+
 export default {
   name: "FormSuggestion",
   props: {
@@ -88,6 +91,9 @@ export default {
       this.$emit("update-suggestion", this.localSuggestion);
 
     },
+  },
+  components: {
+    VueEditor
   },
   emits: [
     'update-suggestion'

@@ -1,14 +1,14 @@
 <template>
-  <tr class="inline-block w-full">
+  <tr class="inline-block w-full px-6 py-5"  @click="showDescription">
     <td class="inline-block w-full">
-      <div class="flex justify-between">
-        <div id="suggestion" class="flex items-center">
+      <div class="flex justify-between" v-show="!showSuggestion">
+        <div id="suggestion" class="flex items-center w-full">
           <div class="bg-gray-300 rounded-sm p-2.5 cursor-pointer hover:bg-gray-100"
             :class="hasVoted ? 'bg-green-200' : ''" @mouseenter="changeVoteText" @mouseleave="resetVoteText"
-            @click="toggleVote">
+            @click.stop="toggleVote">
             <div v-if="voteHover" class="text-center mb-2">
               <div v-if="hasVoted">
-                <i class="fa-solid fa-xl fa-times"></i>
+                <i class="fa-solid fa-xl fa-times pl-1"></i>
               </div>
               <div v-else>
                 <i class="fa-solid fa-xl fa-circle-up"></i>
@@ -19,20 +19,20 @@
             </div>
             <p>Votes</p>
           </div>
-          <div class="pl-3">
+          <div class="pl-3 w-full">
             <div class="flex items-center text-sm leading-none">
-              <p class="font-semibold" :class="modifiedSuggestion ? 'text-green-500' : 'text-gray-800'">{{ suggestion.title }}</p>
+              <p class="font-semibold text-gray-800">
+                {{ suggestion.title }}
+              </p>
             </div>
-            <p class="
-              text-xs
-              md:text-sm
-              leading-none
-              mt-2
-              max-w-full
-            "
-            :class="modifiedSuggestion ? 'text-green-500' : 'text-gray-600'">
-              {{ suggestion.description }}
-            </p>
+            <div class="ql-snow" v-if="description">
+              <div class="ql-editor">
+                <div v-html="suggestion.description"></div>
+              </div>
+            </div>
+            <div v-if="!description">
+              <span>{{ suggestion.description | strippedContent }}</span>
+            </div>
           </div>
         </div>
         <div id="user-actions" v-show="suggestion.my_vote">
@@ -42,6 +42,10 @@
         </div>
       </div>
       <div v-show="showSuggestion">
+        <div class="flex justify-end">
+          <i class="fa-solid fa-edit mb-4 hover:text-blue-500 cursor-pointer" @click="toggleSuggestion"></i>
+        </div>
+
         <UpdateSuggestion @update-suggestion="updateSuggestions" :suggestion="suggestion" />
       </div>
     </td>
@@ -65,6 +69,15 @@ export default {
       voteId: Number,
       showSuggestion: false,
       modifiedSuggestion: false,
+      description: false,
+    }
+  },
+  filters: {
+    strippedContent: function (value) {
+      const div = document.createElement('div')
+      div.innerHTML = value
+      const text = div.textContent || div.innerText || ''
+      return text
     }
   },
   methods: {
@@ -107,6 +120,9 @@ export default {
     },
     toggleSuggestion() {
       this.showSuggestion = !this.showSuggestion
+    },
+    showDescription() {
+      this.description = !this.description
     }
   },
   components: {
@@ -114,12 +130,13 @@ export default {
   },
 };
 </script>
-
 <style scoped>
-.truncate {
-  width: 600px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.ql-editor {
+  padding: 12px 20px 12px 0px;
+  min-height: auto;
+}
+
+.ql-editor>>>img {
+  border-radius: 0.25rem;
 }
 </style>

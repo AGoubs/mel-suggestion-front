@@ -12,7 +12,8 @@
     "core-js": "^3.6.5",
     "flowbite": "^1.4.5",
     "vue": "^2.6.11",
-    "vue-router": "^3.5.3"
+    "vue-router": "^3.5.3",
+    "vue2-editor": "^2.10.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss7-compat": "^2.2.17",
