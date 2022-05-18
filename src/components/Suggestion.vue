@@ -1,14 +1,15 @@
 <template>
-  <tr class="inline-block w-full px-6 pt-3 " :class="!showSuggestion ? 'hover:bg-gray-200' : ''" @click.prevent="description = !description">
+  <tr class="inline-block w-full px-6 pt-3 " :class="!showSuggestion ? 'hover:bg-gray-100' : ''"
+    @click.prevent="description = !description">
     <td class="inline-block w-full">
       <div class="flex justify-between" v-show="!showSuggestion">
         <div id="suggestion" class="flex items-center w-full">
-          <div class="bg-gray-300 rounded-sm p-2.5 cursor-pointer hover:bg-gray-100"
+          <div class="bg-gray-300 rounded-sm p-2.5 cursor-pointer hover:bg-gray-200"
             :class="hasVoted ? 'bg-green-200' : ''" @mouseenter="changeVoteText" @mouseleave="resetVoteText"
             @click.stop="toggleVote">
             <div v-if="voteHover" class="text-center mb-2">
               <div v-if="hasVoted">
-                <i class="fa-solid fa-xl fa-times pl-1"></i>
+                <i class="fa-solid fa-xl fa-times"></i>
               </div>
               <div v-else>
                 <i class="fa-solid fa-xl fa-circle-up"></i>
@@ -31,9 +32,9 @@
                 <div v-html="suggestion.description"></div>
               </div>
             </div>-->
-            <div :class="description ? 'invisible' : 'visible'" class="overflow-hidden truncate w-96">
+            <div :class="description ? 'invisible' : 'visible'" class="overflow-hidden truncate custom_width">
               <span>{{ suggestion.description | strippedContent }}</span>
-            </div> 
+            </div>
           </div>
         </div>
         <div id="user-actions" v-show="suggestion.my_vote">
@@ -50,7 +51,7 @@
         <UpdateSuggestion @update-suggestion="updateSuggestions" :suggestion="suggestion" />
       </div>
     </td>
-   <Accordion :description="suggestion.description" :active="description" v-show="!showSuggestion"/>
+    <Accordion :description="suggestion.description" :active="description" v-show="!showSuggestion" />
   </tr>
 </template>
 
@@ -135,9 +136,39 @@ export default {
 };
 </script>
 <style scoped>
-* >>> .ql-editor {
+*>>>.ql-editor {
   padding: 12px 20px 12px 0px;
   min-height: 100px;
+}
+
+@media (max-width: 576px) {
+  .custom_width {
+    width: 17rem;
+  }
+}
+
+@media (min-width: 576px) {
+  .custom_width {
+    width: 25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .custom_width {
+    width: 36rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .custom_width {
+    width: 44rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .custom_width {
+    width: 45rem;
+  }
 }
 
 .ql-editor>>>img {
