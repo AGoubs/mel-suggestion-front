@@ -5,10 +5,10 @@
       <div class="flex justify-between" v-show="!showSuggestion">
         <div id="suggestion" class="flex items-center w-full">
           <div class="bg-gray-300 rounded-sm p-2.5 cursor-pointer hover:bg-gray-200"
-            :class="hasVoted ? 'bg-green-200' : ''" @mouseenter="changeVoteText" @mouseleave="resetVoteText"
+            :class="suggestion.voted ? 'bg-green-200' : ''" @mouseenter="changeVoteText" @mouseleave="resetVoteText"
             @click.stop="toggleVote">
             <div v-if="voteHover" class="text-center mb-2">
-              <div v-if="hasVoted">
+              <div v-if="suggestion.voted">
                 <i class="fa-solid fa-xl fa-times"></i>
               </div>
               <div v-else>
@@ -37,7 +37,7 @@
             </div>
           </div>
         </div>
-        <div id="user-actions" v-show="suggestion.my_vote">
+        <div id="user-actions" v-show="suggestion.my_suggestion">
           <i class="fa-solid fa-edit mb-4 hover:text-blue-500 cursor-pointer" @click="toggleSuggestion"></i>
           <br>
           <i class="fa-solid fa-xl fa-times mt-4 hover:text-red-500 cursor-pointer" @click="deleteSuggestion"></i>
@@ -69,7 +69,6 @@ export default {
   data() {
     return {
       voteHover: false,
-      hasVoted: false,
       voteId: Number,
       showSuggestion: false,
       modifiedSuggestion: false,
@@ -92,8 +91,8 @@ export default {
       this.voteHover = false
     },
     toggleVote() {
-      this.hasVoted = !this.hasVoted
-      if (this.hasVoted) {
+      this.suggestion.voted = !this.suggestion.voted
+      if (this.suggestion.voted) {
         this.suggestion.nb_votes++
         axios.post("http://127.0.0.1:8000/api/votes", {
           user_email: 'Arnaud@goubier.fr',
@@ -107,10 +106,14 @@ export default {
       }
       else {
         this.suggestion.nb_votes--
+        if (!this.suggestion.voted) {
+          this.voteId = this.suggestion.vote_id;
+        }
         axios.delete(`http://127.0.0.1:8000/api/votes/${this.voteId}`).catch((error) => {
           console.log(error);
         })
       }
+
     },
     deleteSuggestion() {
       if (confirm('Voulez-vous supprimer cette suggestion ?')) {

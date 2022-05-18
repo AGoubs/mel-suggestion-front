@@ -71,7 +71,7 @@ export default {
         user_email: 'Arnaud@goubier.fr',
         state: 'validate'
       }).then((response) => {
-        response.data.my_vote = true;
+        response.data.my_suggestion = true;
         this.suggestions = [...this.suggestions, response.data]
       })
     },
