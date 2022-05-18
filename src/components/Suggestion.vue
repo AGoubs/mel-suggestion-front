@@ -1,5 +1,5 @@
 <template>
-  <tr class="inline-block w-full px-6 py-5"  @click="showDescription">
+  <tr class="inline-block w-full px-6 pt-3 " :class="!showSuggestion ? 'hover:bg-gray-200' : ''" @click.prevent="description = !description">
     <td class="inline-block w-full">
       <div class="flex justify-between" v-show="!showSuggestion">
         <div id="suggestion" class="flex items-center w-full">
@@ -25,14 +25,15 @@
                 {{ suggestion.title }}
               </p>
             </div>
-            <div class="ql-snow" v-if="description">
+
+            <!-- <div class="ql-snow" v-if="description">
               <div class="ql-editor">
                 <div v-html="suggestion.description"></div>
               </div>
-            </div>
-            <div v-if="!description">
+            </div>-->
+            <div :class="description ? 'invisible' : 'visible'" class="overflow-hidden truncate w-96">
               <span>{{ suggestion.description | strippedContent }}</span>
-            </div>
+            </div> 
           </div>
         </div>
         <div id="user-actions" v-show="suggestion.my_vote">
@@ -49,6 +50,7 @@
         <UpdateSuggestion @update-suggestion="updateSuggestions" :suggestion="suggestion" />
       </div>
     </td>
+   <Accordion :description="suggestion.description" :active="description" v-show="!showSuggestion"/>
   </tr>
 </template>
 
@@ -56,6 +58,7 @@
 import axios from "axios";
 
 import UpdateSuggestion from "./UpdateSuggestion";
+import Accordion from "./Accordion";
 
 export default {
   name: "Suggestion",
@@ -126,14 +129,15 @@ export default {
     }
   },
   components: {
-    UpdateSuggestion
+    UpdateSuggestion,
+    Accordion
   },
 };
 </script>
 <style scoped>
-.ql-editor {
+* >>> .ql-editor {
   padding: 12px 20px 12px 0px;
-  min-height: auto;
+  min-height: 100px;
 }
 
 .ql-editor>>>img {
