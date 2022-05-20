@@ -4,9 +4,9 @@
     <td class="inline-block w-full">
       <div class="flex justify-between" v-show="!showSuggestion">
         <div id="suggestion" class="flex items-center w-full">
-          <div class="bg-gray-300 rounded-sm p-2.5 cursor-pointer hover:bg-gray-200"
-            :class="suggestion.voted ? 'bg-green-200' : ''" @mouseenter="changeVoteText" @mouseleave="resetVoteText"
-            @click.stop="toggleVote">
+          <div class="bg-gray-300 rounded-sm p-2.5 cursor-pointer"
+            :class="[suggestion.voted ? 'bg-green-200' : '', !suggestion.my_suggestion ? 'hover:bg-gray-200' : '']"
+            @mouseenter="changeVoteText" @mouseleave="resetVoteText" @click.stop="toggleVote">
             <div v-if="voteHover" class="text-center mb-2">
               <div v-if="suggestion.voted">
                 <i class="fa-solid fa-xl fa-times"></i>
@@ -34,7 +34,7 @@
         <div id="user-actions" v-show="suggestion.my_suggestion">
           <i class="fa-solid fa-edit mb-4 hover:text-blue-500 cursor-pointer" @click="toggleSuggestion"></i>
           <br>
-          <i class="fa-solid fa-xl fa-times mt-4 hover:text-red-500 cursor-pointer" @click="deleteSuggestion"></i>
+          <i class="fa-solid fa-trash mt-4 hover:text-red-500 cursor-pointer" @click="deleteSuggestion"></i>
         </div>
       </div>
       <div v-show="showSuggestion">
@@ -79,36 +79,39 @@ export default {
   },
   methods: {
     changeVoteText() {
-      this.voteHover = true
+      if (!this.suggestion.my_suggestion)
+        this.voteHover = true
     },
     resetVoteText() {
-      this.voteHover = false
+      if (!this.suggestion.my_suggestion)
+        this.voteHover = false
     },
     toggleVote() {
-      this.suggestion.voted = !this.suggestion.voted
-      if (this.suggestion.voted) {
-        this.suggestion.nb_votes++
-        axios.post("http://127.0.0.1:8000/api/votes", {
-          user_email: 'Arnaud@goubier.fr',
-          suggestion_id: this.suggestion.id
-        }).then((res) => {
-          this.voteId = res.data.id
-        })
-          .catch((error) => {
+      if (!this.suggestion.my_suggestion) {
+        this.suggestion.voted = !this.suggestion.voted
+        if (this.suggestion.voted) {
+          this.suggestion.nb_votes++
+          axios.post("http://127.0.0.1:8000/api/votes", {
+            user_email: 'Arnaud@goubier.fr',
+            suggestion_id: this.suggestion.id
+          }).then((res) => {
+            this.voteId = res.data.id
+          })
+            .catch((error) => {
+              console.log(error);
+            })
+        }
+        else {
+          this.suggestion.nb_votes--
+          if (this.suggestion.vote_id) {
+            this.voteId = this.suggestion.vote_id;
+            delete this.suggestion.vote_id;
+          }
+          axios.delete(`http://127.0.0.1:8000/api/votes/${this.voteId}`).catch((error) => {
             console.log(error);
           })
-      }
-      else {
-        this.suggestion.nb_votes--
-        if (this.suggestion.vote_id) {
-          this.voteId = this.suggestion.vote_id;
-          delete this.suggestion.vote_id;
         }
-        axios.delete(`http://127.0.0.1:8000/api/votes/${this.voteId}`).catch((error) => {
-          console.log(error);
-        })
       }
-
     },
     deleteSuggestion() {
       if (confirm('Voulez-vous supprimer cette suggestion ?')) {

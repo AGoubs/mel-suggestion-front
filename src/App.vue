@@ -67,9 +67,7 @@ export default {
     addSuggestion(newSuggestion) {
       axios.post("http://127.0.0.1:8000/api/suggestions", {
         title: newSuggestion.title,
-        description: newSuggestion.description,
-        user_email: 'Arnaud@goubier.fr',
-        state: 'validate'
+        description: newSuggestion.description
       }).then((response) => {
         response.data.my_suggestion = true;
         this.suggestions = [...this.suggestions, response.data]
