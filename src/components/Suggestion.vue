@@ -1,5 +1,5 @@
 <template>
-  <tr class="inline-block w-full px-6 pt-3 " :class="!showSuggestion ? 'hover:bg-gray-100' : ''"
+  <tr class="inline-block w-full px-6 pt-3 " :class="[!showSuggestion ? 'hover:bg-gray-100' : '']"
     @click.prevent="description = !description">
     <td class="inline-block w-full">
       <div class="flex justify-between" v-show="!showSuggestion">

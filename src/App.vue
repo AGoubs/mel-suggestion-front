@@ -74,8 +74,8 @@ export default {
       })
     },
     deleteSuggestion(id) {
-      let idx = this.suggestions.indexOf(id)
-      this.suggestions.splice(idx, 1)
+      let pos = this.suggestions.map(function(e) { return e.id; }).indexOf(id);
+      this.suggestions.splice(pos, 1)
       axios.delete(`http://127.0.0.1:8000/api/suggestions/${id}`).catch((error) => {
         console.log(error);
       })
