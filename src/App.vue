@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1 v-if="$moderator">Modérateur</h1>
 
     <body class="flex items-center justify-center py-8">
       <div class="w-full max-w-4xl px-4">
@@ -13,7 +14,6 @@
             <section v-if="errored" class="flex justify-center my-3">
               <p>Une erreur s'est produite lors du chargement des données</p>
             </section>
-
             <section v-else>
               <div v-if="loading">
                 <Preloader color="gray" />
@@ -50,20 +50,23 @@ export default {
     };
   },
   mounted() {
-    axios
-      .get("http://127.0.0.1:8000/api/suggestions")
-      .then((response) => {
-        this.suggestions = response.data;
-      })
-      .catch(error => {
-        console.log(error)
-        this.errored = true
-      })
-      .finally(() => {
-        this.loading = false
-      })
+    this.getAllSuggestions();
   },
   methods: {
+    getAllSuggestions() {
+      axios
+        .get("http://127.0.0.1:8000/api/suggestions")
+        .then((response) => {
+          this.suggestions = response.data;
+        })
+        .catch(error => {
+          console.log(error)
+          this.errored = true
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
     addSuggestion(newSuggestion) {
       axios.post("http://127.0.0.1:8000/api/suggestions", {
         title: newSuggestion.title,
@@ -74,7 +77,7 @@ export default {
       })
     },
     deleteSuggestion(id) {
-      let pos = this.suggestions.map(function(e) { return e.id; }).indexOf(id);
+      let pos = this.suggestions.map(function (e) { return e.id; }).indexOf(id);
       this.suggestions.splice(pos, 1)
       axios.delete(`http://127.0.0.1:8000/api/suggestions/${id}`).catch((error) => {
         console.log(error);
