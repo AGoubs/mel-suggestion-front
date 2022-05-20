@@ -45,7 +45,7 @@
         <UpdateSuggestion @update-suggestion="updateSuggestions" :suggestion="suggestion" />
       </div>
     </td>
-    <Accordion :description="suggestion.description" :active="description" v-show="!showSuggestion" />
+    <Accordion :suggestion="suggestion" :active="description" v-show="!showSuggestion" />
   </tr>
 </template>
 
