@@ -1,11 +1,17 @@
 import Vue from 'vue'
 import App from './App.vue'
 import axios from "axios";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 import './index.css'
 
-Vue.config.productionTip = false
+const options = {
+  position: "bottom-right",
+};
 
+Vue.config.productionTip = false
+Vue.use(Toast, options);
 Vue.prototype.$axios = axios;
 
 
