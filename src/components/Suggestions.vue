@@ -3,13 +3,12 @@
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <tbody>
         <div v-for="suggestion in sortedSuggestions" :key="suggestion.id">
-          <Suggestion @delete-suggestion="deleteSuggestion" @validate-suggestion="validateSuggestion" @update-suggestion="updateSuggestion"
-            :suggestion="suggestion" />
+          <Suggestion @delete-suggestion="deleteSuggestion" @validate-suggestion="validateSuggestion"
+            @update-suggestion="updateSuggestion" :suggestion="suggestion" />
           <hr />
         </div>
       </tbody>
     </table>
-
     <div v-if="search.length >= 3 || !filteredList.length">
       <div class="flex justify-center">
         <p v-show="!filteredList.length" class="my-3">Aucun résultat</p>
@@ -41,11 +40,12 @@ export default {
       sortBy: 'nb_votes',
       sortDirection: 'desc',
       localSuggestions: this.suggestions,
+      validateOnly: false,
     }
   },
   mounted() {
-    this.$root.$on('sort-suggestion', (e) => {
-      this.sort(e)
+    this.$root.$on('sort-suggestion', (sortBy, validateOnly) => {
+      this.sort(sortBy, validateOnly)
     }),
       this.$root.$on('search', (e) => {
         this.searchValue(e)
@@ -63,8 +63,9 @@ export default {
     }
   },
   methods: {
-    sort(s) {
+    sort(s, v) {
       this.sortBy = s;
+      this.validateOnly = v;
     },
     searchValue(s) {
       this.search = s;
@@ -102,7 +103,16 @@ export default {
       });
     },
     filteredList() {
-      return this.localSuggestions.slice(0).filter(suggestion => {
+      let filteredlocalSuggestions = this.localSuggestions.slice(0).filter(suggestion => {
+        if (this.validateOnly) {
+          return suggestion.state.toLowerCase().includes("validate")
+        }
+        else {
+          return !suggestion.state.toLowerCase().includes("validate")
+        }
+      });
+
+      return filteredlocalSuggestions.filter(suggestion => {
         return suggestion.title.toLowerCase().includes(this.search.toLowerCase())
       })
     }
