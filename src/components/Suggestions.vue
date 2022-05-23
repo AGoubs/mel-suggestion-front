@@ -1,13 +1,15 @@
 <template>
-  <div class="relative overflow-x-auto sm:rounded-lg">
+  <div class="relative overflow-x-auto">
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <tbody>
         <div v-for="suggestion in sortedSuggestions" :key="suggestion.id">
-          <Suggestion @delete-suggestion="deleteSuggestion" @update-suggestion="updateSuggestion" :suggestion="suggestion" />
+          <Suggestion @delete-suggestion="deleteSuggestion" @validate-suggestion="validateSuggestion" @update-suggestion="updateSuggestion"
+            :suggestion="suggestion" />
           <hr />
         </div>
       </tbody>
     </table>
+
     <div v-if="search.length >= 3 || !filteredList.length">
       <div class="flex justify-center">
         <p v-show="!filteredList.length" class="my-3">Aucun résultat</p>
@@ -69,12 +71,15 @@ export default {
     },
     addSuggestion(newSuggestion) {
       this.resetSearch()
-      this.sortBy = 'updated_at' 
+      this.sortBy = 'updated_at'
       this.$root.$emit('sort-suggestion-active', this.sortBy)
       this.$emit('add-suggestion', newSuggestion);
     },
     deleteSuggestion(id) {
       this.$emit('delete-suggestion', id);
+    },
+    validateSuggestion(suggestion) {
+      this.$emit("validate-suggestion", suggestion);
     },
     updateSuggestion(suggestion) {
       this.$emit('update-suggestion', suggestion);

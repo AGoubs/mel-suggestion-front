@@ -48,6 +48,14 @@ export default {
   props: [
     'suggestion', 'active'
   ],
+  methods: {
+    validateSuggestion() {
+      this.$emit("validate-suggestion", this.suggestion.id)
+    },
+    refuseSuggestion() {
+      this.$emit("delete-suggestion", this.suggestion.id);
+    }
+  }
 }
 </script>
 

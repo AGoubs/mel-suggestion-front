@@ -1,5 +1,5 @@
 <template>
-  <tr class="inline-block w-full px-6 pt-3 " :class="[!showSuggestion ? 'hover:bg-gray-100' : '']"
+  <tr class="inline-block w-full px-6 pt-3 border-l-2" :class="[suggestion.state == 'modify' ? 'border-yellow-500' : '', suggestion.state == 'validate' ? 'border-green-500' : '']"
     @click.prevent="description = !description">
     <td class="inline-block w-full">
       <div class="flex justify-between" v-show="!showSuggestion">
@@ -31,10 +31,10 @@
             </div>
           </div>
         </div>
-        <div id="user-actions" v-show="suggestion.my_suggestion">
+        <div id="user-actions" v-show="suggestion.my_suggestion || $moderator">
           <i class="fa-solid fa-edit mb-4 hover:text-blue-500 cursor-pointer" @click="toggleSuggestion"></i>
           <br>
-          <i class="fa-solid fa-trash mt-4 hover:text-red-500 cursor-pointer" @click="deleteSuggestion"></i>
+          <i v-show="!$moderator" class="fa-solid fa-trash mt-4 hover:text-red-500 cursor-pointer" @click="deleteSuggestion"></i>
         </div>
       </div>
       <div v-show="showSuggestion">
@@ -45,7 +45,7 @@
         <UpdateSuggestion @update-suggestion="updateSuggestions" :suggestion="suggestion" />
       </div>
     </td>
-    <Accordion :suggestion="suggestion" :active="description" v-show="!showSuggestion" />
+    <Accordion @delete-suggestion="deleteSuggestion" @validate-suggestion="validateSuggestion" :suggestion="suggestion" :active="description" v-show="!showSuggestion" />
   </tr>
 </template>
 
@@ -122,6 +122,10 @@ export default {
       this.$emit("update-suggestion", suggestion);
       this.toggleSuggestion();
       this.modifiedSuggestion = true;
+    },
+    validateSuggestion(state) {
+      this.$emit("validate-suggestion", state);
+      this.suggestion.state = state
     },
     toggleSuggestion() {
       this.showSuggestion = !this.showSuggestion

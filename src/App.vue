@@ -21,7 +21,8 @@
 
               <div v-else>
                 <Suggestions @add-suggestion="addSuggestion" @delete-suggestion="deleteSuggestion"
-                  @update-suggestion="updateSuggestion" :suggestions="suggestions" />
+                  @validate-suggestion="validateSuggestion" @update-suggestion="updateSuggestion"
+                  :suggestions="suggestions" />
               </div>
             </section>
           </div>
@@ -80,6 +81,13 @@ export default {
       let pos = this.suggestions.map(function (e) { return e.id; }).indexOf(id);
       this.suggestions.splice(pos, 1)
       axios.delete(`http://127.0.0.1:8000/api/suggestions/${id}`).catch((error) => {
+        console.log(error);
+      })
+    },
+    validateSuggestion(id) {
+      axios.put(`http://127.0.0.1:8000/api/suggestions/state/${id}`, {
+        state: 'vote'
+      }).catch((error) => {
         console.log(error);
       })
     },
