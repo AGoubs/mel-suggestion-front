@@ -12,7 +12,7 @@
           <div v-html="suggestion.description"></div>
         </div>
       </div>
-      <div id="moderator_commands" v-if="$moderator">
+      <div id="moderator_commands" v-if="$moderator && suggestion.state != 'validate'">
         <hr class="mb-2">
         Suggestion ajoutée par : <a :href="`mailto:${suggestion.user_email}`" target="_blank" class="font-bold"
           @click.stop="mailtoUser">{{

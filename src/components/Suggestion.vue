@@ -32,7 +32,7 @@
             </div>
           </div>
         </div>
-        <div id="user-actions" v-show="suggestion.my_suggestion || $moderator">
+        <div id="user-actions" v-show="suggestion.my_suggestion || ($moderator && suggestion.state != 'validate')">
           <i class="fa-solid fa-edit mb-4 hover:text-blue-500 cursor-pointer" @click="toggleSuggestion"></i>
           <br>
           <i v-show="!$moderator" class="fa-solid fa-trash mt-4 hover:text-red-500 cursor-pointer"
@@ -63,11 +63,6 @@ export default {
   props: {
     suggestion: Object,
   },
-  mounted() {
-    if (this.suggestion.state == 'validate') {
-      this.$root.$emit('validate-exist')
-    }
-  },
   data() {
     return {
       voteHover: false,
@@ -87,15 +82,15 @@ export default {
   },
   methods: {
     changeVoteText() {
-      if (!this.suggestion.my_suggestion)
+      if (!this.suggestion.my_suggestion && this.suggestion.state != 'validate')
         this.voteHover = true
     },
     resetVoteText() {
-      if (!this.suggestion.my_suggestion)
+      if (!this.suggestion.my_suggestion && this.suggestion.state != 'validate')
         this.voteHover = false
     },
     toggleVote() {
-      if (!this.suggestion.my_suggestion) {
+      if (!this.suggestion.my_suggestion && this.suggestion.state != 'validate') {
         this.suggestion.voted = !this.suggestion.voted
         if (this.suggestion.voted) {
           this.suggestion.nb_votes++

@@ -2,17 +2,17 @@
   <div>
     <div class="inline-flex">
       <button
-        class="bg-white hover:bg-gray-100 text-slate-600 font-semibold py-2 px-3 border border-gray-300 rounded-l shadow"
-        @click="sort('nb_votes', false)" v-bind:class="[sortBy === 'nb_votes' ? 'bg-gray-200' : '']">
+        class="bg-white text-slate-600 font-semibold py-2 px-3 border border-gray-300 rounded-l shadow"
+        @click="sort('nb_votes', false)" v-bind:class="[sortBy === 'nb_votes'  && validateOnly === false ? 'bg-gray-200' : 'hover:bg-gray-100']">
         <i class="fas fa-star text-slate-400"></i> Top
       </button>
-      <button class="bg-white hover:bg-gray-100 text-slate-600 font-semibold py-2 px-3 border border-gray-300 shadow"
-        @click="sort('updated_at', false)" v-bind:class="[sortBy === 'updated_at' ? 'bg-gray-200' : '']">
+      <button class="bg-white text-slate-600 font-semibold py-2 px-3 border border-gray-300 shadow"
+        @click="sort('updated_at', false)" v-bind:class="[sortBy === 'updated_at' && validateOnly === false ? 'bg-gray-200' : 'hover:bg-gray-100']">
         <i class="fas fa-clock text-slate-400"></i> Nouveau
       </button>
-      <button v-show="isValidate"
-        class="bg-white hover:bg-gray-100 text-slate-600 font-semibold py-2 px-3 border border-gray-300 rounded-r shadow"
-        @click="sort('desc', true)" v-bind:class="[sortBy === 'state' ? 'bg-gray-200' : '']">
+      <button
+        class="bg-white text-slate-600 font-semibold py-2 px-3 border border-gray-300 rounded-r shadow"
+        @click="sort('updated_at', true)" v-bind:class="[validateOnly === true ? 'bg-gray-200' : 'hover:bg-gray-100']">
         <i class="fas fa-list-check text-slate-400 mr-1"></i> A venir
       </button>
     </div>
@@ -26,20 +26,18 @@ export default {
     return {
       sortBy: 'nb_votes',
       sortDirection: 'desc',
-      isValidate: false,
+      validateOnly: false
     }
   },
   mounted() {
     this.$root.$on('sort-suggestion-active', (e) => {
       this.sortBy = e
-    }),
-    this.$root.$on('validate-exist', () => {
-      this.isValidate = true
     })
   },
   methods: {
     sort(sorting, validateOnly) {
       this.sortBy = sorting;
+      this.validateOnly = validateOnly;
       this.$root.$emit('sort-suggestion', sorting, validateOnly)
     }
   }
