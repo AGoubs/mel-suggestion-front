@@ -6,7 +6,7 @@
       <div class="flex justify-between" v-show="!showSuggestion">
         <div id="suggestion" class="flex items-center w-full">
           <div class="bg-gray-300 rounded-sm p-2.5 cursor-pointer"
-            :class="[suggestion.voted ? 'bg-green-200' : '', !suggestion.my_suggestion ? 'hover:bg-gray-200' : '']"
+            :class="[suggestion.voted ? 'bg-green-200' : '', suggestion.state != 'validate' && !suggestion.my_suggestion ? 'hover:bg-gray-200' : '']"
             @mouseenter="changeVoteText" @mouseleave="resetVoteText" @click.stop="toggleVote">
             <div v-if="voteHover" class="text-center mb-2">
               <div v-if="suggestion.voted">
@@ -32,7 +32,7 @@
             </div>
           </div>
         </div>
-        <div id="user-actions" v-show="suggestion.my_suggestion || ($moderator && suggestion.state != 'validate')">
+        <div id="user-actions" v-show="(suggestion.my_suggestion || $moderator) && suggestion.state != 'validate'">
           <i class="fa-solid fa-edit mb-4 hover:text-blue-500 cursor-pointer" @click="toggleSuggestion"></i>
           <br>
           <i v-show="!$moderator" class="fa-solid fa-trash mt-4 hover:text-red-500 cursor-pointer"
