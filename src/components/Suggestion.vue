@@ -1,6 +1,6 @@
 <template>
   <tr class="inline-block w-full px-6 pt-3 border-l-2"
-    :class="[suggestion.state == 'modify' ? 'border-yellow-500' : '', suggestion.state == 'validate' ? 'border-green-500' : '']"
+    :class="[suggestion.state == 'moderate' ? 'border-yellow-500' : '', suggestion.state == 'validate' ? 'border-green-500' : '']"
     @click.prevent="description = !description">
     <td class="inline-block w-full">
       <div class="flex justify-between" v-show="!showSuggestion">

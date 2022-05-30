@@ -1,0 +1,70 @@
+<template>
+  <div id="moderator_commands" v-if="$moderator">
+    <hr class="mb-2">
+    Suggestion ajoutée par : <a :href="`mailto:${suggestion.user_email}`" target="_blank" class="font-bold"
+      @click.stop>{{
+          suggestion.user_email
+      }}</a>
+    <div class="flex justify-between mt-3" v-if="suggestion.state == 'moderate'">
+      <button @click.stop="refuseSuggestion"
+        class="text-red-500 border border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600 font-bold uppercase text-xs px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        type="button">
+        <i class="fa-solid fa-times mr-1"></i>
+        Refuser
+      </button>
+      <button @click.stop="modifySuggestion"
+        class="text-yellow-500 border border-yellow-500 hover:bg-yellow-500 hover:text-white active:bg-yellow-600 font-bold uppercase text-xs px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        type="button">
+        <i class="fa-solid fa-pen mr-1"></i>
+        A modifier
+      </button>
+      <button @click.stop="validateSuggestion"
+        class="text-green-500 border border-green-500 hover:bg-green-500 hover:text-white active:bg-green-600 font-bold uppercase text-xs px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        type="button">
+        <i class="fa-solid fa-check mr-1"></i>
+        Valider
+      </button>
+    </div>
+
+    <div class="flex justify-between mt-3" v-if="suggestion.state == 'vote'">
+      <button @click.stop="refuseSuggestion"
+        class="text-red-500 border border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600 font-bold uppercase text-xs px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        type="button">
+        <i class="fa-solid fa-times mr-1"></i>
+        Refuser
+      </button>
+      <button @click.stop="lockSuggestion"
+        class="text-blue-500 border border-blue-500 hover:bg-blue-500 hover:text-white active:bg-blue-600 font-bold uppercase text-xs px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        type="button">
+        <i class="fa-solid fa-lock mr-1"></i>
+        Verrouiller
+      </button>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'ModeratorCommands',
+  props: [
+    'suggestion'
+  ],
+  methods: {
+    refuseSuggestion() {
+      this.$emit("delete-suggestion", this.suggestion.id);
+    },
+    modifySuggestion() {
+      this.$emit("modify-suggestion", this.suggestion.id);
+    },
+    validateSuggestion() {
+      this.$emit("validate-suggestion", this.suggestion.id)
+    },
+    lockSuggestion() {
+      this.$emit("lock-suggestion", this.suggestion.id)
+    }
+  },
+}
+</script>
+
+<style>
+</style>

@@ -4,7 +4,7 @@
       <tbody>
         <div v-for="suggestion in sortedSuggestions" :key="suggestion.id">
           <Suggestion @delete-suggestion="deleteSuggestion" @validate-suggestion="validateSuggestion"
-            @update-suggestion="updateSuggestion" :suggestion="suggestion" />
+            @update-suggestion="updateSuggestion" @lock-suggestion="lockSuggestion" :suggestion="suggestion" />
           <hr />
         </div>
       </tbody>
@@ -76,14 +76,17 @@ export default {
       this.$root.$emit('sort-suggestion-active', this.sortBy)
       this.$emit('add-suggestion', newSuggestion);
     },
-    deleteSuggestion(id) {
-      this.$emit('delete-suggestion', id);
+    refuseSuggestion(id) {
+      this.$emit("delete-suggestion", id);
     },
-    validateSuggestion(suggestion) {
-      this.$emit("validate-suggestion", suggestion);
+    modifySuggestion(id) {
+      this.$emit("modify-suggestion", id);
     },
-    updateSuggestion(suggestion) {
-      this.$emit('update-suggestion', suggestion);
+    validateSuggestion(id) {
+      this.$emit("validate-suggestion", id)
+    },
+    lockSuggestion(id) {
+      this.$emit("lock-suggestion", id)
     },
     showCreateSuggestion() {
       this.create = !this.create

@@ -94,7 +94,7 @@ export default {
     },
     validateSuggestion(id) {
       axios.put(`http://127.0.0.1:8000/api/suggestions/state/${id}`, {
-        state: 'validate'
+        state: 'vote'
       }).then(() => {
         this.$toast.success("Suggestion validée avec succès !");
       }).catch((error) => {
