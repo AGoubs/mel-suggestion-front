@@ -36,7 +36,7 @@
           <i class="fa-solid fa-edit mb-4 hover:text-blue-500 cursor-pointer" @click="toggleSuggestion"></i>
           <br>
           <i v-show="!$moderator" class="fa-solid fa-trash mt-4 hover:text-red-500 cursor-pointer"
-            @click="deleteSuggestion"></i>
+            @click.stop="onDelete"></i>
         </div>
       </div>
       <div v-show="showSuggestion">
@@ -47,13 +47,13 @@
         <UpdateSuggestion @update-suggestion="updateSuggestions" :suggestion="suggestion" />
       </div>
     </td>
-    <Accordion @delete-suggestion="deleteSuggestion" @validate-suggestion="validateSuggestion" :suggestion="suggestion"
-      :active="description" v-show="!showSuggestion" />
+    <Accordion :suggestion="suggestion" :active="description" v-show="!showSuggestion" />
   </tr>
 </template>
 
 <script>
 import axios from "axios";
+import { mapActions } from "vuex";
 
 import UpdateSuggestion from "./UpdateSuggestion";
 import Accordion from "./Accordion";
@@ -81,6 +81,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['deleteSuggestion']),
     changeVoteText() {
       if (!this.suggestion.my_suggestion && this.suggestion.state != 'validate')
         this.voteHover = true
@@ -116,20 +117,17 @@ export default {
         }
       }
     },
-    deleteSuggestion() {
+    onDelete() {
       if (confirm('Voulez-vous supprimer cette suggestion ?')) {
-        this.$emit("delete-suggestion", this.suggestion.id);
+        // this.$emit("delete-suggestion", this.suggestion.id);
+        this.deleteSuggestion(this.suggestion.id)
       }
     },
-    updateSuggestions(suggestion) {
-      this.$emit("update-suggestion", suggestion);
+    updateSuggestions() {
       this.toggleSuggestion();
       this.modifiedSuggestion = true;
     },
-    validateSuggestion(state) {
-      this.$emit("validate-suggestion", state);
-      this.suggestion.state = state
-    },
+   
     toggleSuggestion() {
       this.showSuggestion = !this.showSuggestion
     },

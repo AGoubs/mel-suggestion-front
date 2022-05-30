@@ -44,23 +44,29 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'ModeratorCommands',
   props: [
     'suggestion'
   ],
   methods: {
+    ...mapActions(['changeStateSuggestion','deleteSuggestion']),
     refuseSuggestion() {
-      this.$emit("delete-suggestion", this.suggestion.id);
+    if (confirm('Voulez-vous refuser cette suggestion ?')) {
+        // this.$emit("delete-suggestion", this.suggestion.id);
+        this.deleteSuggestion(this.suggestion.id)
+      }
     },
     modifySuggestion() {
       this.$emit("modify-suggestion", this.suggestion.id);
     },
     validateSuggestion() {
-      this.$emit("validate-suggestion", this.suggestion.id)
+      this.changeStateSuggestion({ id: this.suggestion.id, state: 'vote' })
     },
     lockSuggestion() {
-      this.$emit("lock-suggestion", this.suggestion.id)
+       this.changeStateSuggestion({ id: this.suggestion.id, state: 'validate' })
     }
   },
 }

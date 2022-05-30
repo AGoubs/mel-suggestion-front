@@ -3,8 +3,7 @@
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <tbody>
         <div v-for="suggestion in sortedSuggestions" :key="suggestion.id">
-          <Suggestion @delete-suggestion="deleteSuggestion" @validate-suggestion="validateSuggestion"
-            @update-suggestion="updateSuggestion" @lock-suggestion="lockSuggestion" :suggestion="suggestion" />
+          <Suggestion :suggestion="suggestion" />
           <hr />
         </div>
       </tbody>
@@ -27,7 +26,7 @@
 
 <script>
 import Suggestion from "./Suggestion";
-import CreateSuggestion from "./createSuggestion";
+import CreateSuggestion from "./CreateSuggestion";
 export default {
   name: "Suggestions",
   props: {
@@ -69,25 +68,7 @@ export default {
     },
     searchValue(s) {
       this.search = s;
-    },
-    addSuggestion(newSuggestion) {
-      this.resetSearch()
-      this.sortBy = 'updated_at'
-      this.$root.$emit('sort-suggestion-active', this.sortBy)
-      this.$emit('add-suggestion', newSuggestion);
-    },
-    refuseSuggestion(id) {
-      this.$emit("delete-suggestion", id);
-    },
-    modifySuggestion(id) {
-      this.$emit("modify-suggestion", id);
-    },
-    validateSuggestion(id) {
-      this.$emit("validate-suggestion", id)
-    },
-    lockSuggestion(id) {
-      this.$emit("lock-suggestion", id)
-    },
+    },   
     showCreateSuggestion() {
       this.create = !this.create
     },

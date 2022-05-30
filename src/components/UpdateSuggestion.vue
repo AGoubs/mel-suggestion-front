@@ -23,7 +23,7 @@
       <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
         Description
       </label>
-        <vue-editor v-model="localSuggestion.description"></vue-editor>
+      <vue-editor v-model="localSuggestion.description"></vue-editor>
       <span class="text-red-500" v-show="descriptionError">Merci de renseigner une description</span>
     </div>
     <div class="flex items-center justify-between">
@@ -45,6 +45,7 @@
 
 <script>
 import { VueEditor } from "vue2-editor";
+import { mapActions } from 'vuex';
 
 export default {
   name: "FormSuggestion",
@@ -59,6 +60,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['updateSuggestion']),
     onSubmit(e) {
       e.preventDefault();
 
@@ -73,9 +75,9 @@ export default {
         this.descriptionError = true
         return
       }
-      
-      this.$emit("update-suggestion", this.localSuggestion);
 
+      this.updateSuggestion(this.localSuggestion);
+      this.$emit("update-suggestion");
     },
   },
   components: {
