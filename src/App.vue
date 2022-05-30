@@ -62,7 +62,7 @@ export default {
         })
         .catch(error => {
           console.log(error)
-        this.$toast.error("Erreur lors du chargement des données");
+          this.$toast.error("Erreur lors du chargement des données");
           this.errored = true
         })
         .finally(() => {
@@ -76,12 +76,19 @@ export default {
       }).then((response) => {
         response.data.my_suggestion = true;
         this.suggestions = [...this.suggestions, response.data]
+        this.$toast.success("Suggestion créée avec succès !");
+      }).catch((error) => {
+        this.$toast.error("Erreur lors de la création de la suggestion");
+        console.log(error);
       })
     },
     deleteSuggestion(id) {
       let pos = this.suggestions.map(function (e) { return e.id; }).indexOf(id);
       this.suggestions.splice(pos, 1)
-      axios.delete(`http://127.0.0.1:8000/api/suggestions/${id}`).catch((error) => {
+      axios.delete(`http://127.0.0.1:8000/api/suggestions/${id}`).then(() => {
+        this.$toast.success("Suggestion supprimée avec succès !");
+      }).catch((error) => {
+        this.$toast.error("Erreur lors de la suppression de la suggestion");
         console.log(error);
       })
     },
@@ -99,7 +106,10 @@ export default {
       axios.put(`http://127.0.0.1:8000/api/suggestions/${suggestion.id}`, {
         title: suggestion.title,
         description: suggestion.description,
+      }).then(() => {
+        this.$toast.success("Suggestion modifiée avec succès !");
       }).catch((error) => {
+        this.$toast.error("Erreur lors de la modification de la suggestion");
         console.log(error);
       })
     }
