@@ -8,9 +8,9 @@
         </div>
       </tbody>
     </table>
-    <div v-if="search.length >= 3 || !filteredList.length">
+    <div v-if="search.length >= 3 || !filteredSuggestions.length">
       <div class="flex justify-center">
-        <p v-show="!filteredList.length" class="my-3">Aucun résultat</p>
+        <p v-show="!filteredSuggestions.length" class="my-3">Aucun résultat</p>
       </div>
       <div class="flex justify-center">
         <button @click="showCreateSuggestion"
@@ -80,14 +80,14 @@ export default {
   },
   computed: {
     sortedSuggestions() {
-      return this.filteredList.slice(0).sort((p1, p2) => {
+      return this.filteredSuggestions.slice(0).sort((p1, p2) => {
         let modifier = 1;
         if (this.sortDirection === 'desc') modifier = -1;
         if (p1[this.sortBy] < p2[this.sortBy]) return -1 * modifier; if (p1[this.sortBy] > p2[this.sortBy]) return 1 * modifier;
         return 0;
       });
     },
-    filteredList() {
+    filteredSuggestions() {
       let filteredlocalSuggestions = this.localSuggestions.slice(0).filter(suggestion => {
         if (this.validateOnly) {
           return suggestion.state.toLowerCase().includes("validate")

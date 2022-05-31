@@ -60,6 +60,9 @@ export default {
     refuseSuggestion() {
       if (confirm('Voulez-vous refuser cette suggestion ?')) {
         this.deleteSuggestion(this.suggestion.id)
+        if (confirm('Envoyer un mail de refus ?')) {
+          this.sendEmail();
+        }
       }
     },
     validateSuggestion() {
@@ -73,6 +76,9 @@ export default {
       }
     },
     modifySuggestion() {
+      this.sendEmail();
+    },
+    sendEmail() {
       const windowRef = window.open(`mailto:${this.suggestion.user_email}`, '_blank');
       windowRef.focus();
       setTimeout(function () {

@@ -16,6 +16,7 @@ const actions = {
     axios
       .get("http://127.0.0.1:8000/api/suggestions")
       .then((response) => {
+        console.log(response.data);
         commit('setSuggestions', response.data);
       })
       .catch((error) => {
