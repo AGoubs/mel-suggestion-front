@@ -65,10 +65,14 @@ export default {
       this.$emit("modify-suggestion", this.suggestion.id);
     },
     validateSuggestion() {
-      this.changeStateSuggestion({ id: this.suggestion.id, state: 'vote' })
+      if (confirm('Voulez-vous valider cette suggestion ?')) {
+        this.changeStateSuggestion({ id: this.suggestion.id, state: 'vote' })
+      }
     },
     lockSuggestion() {
-      this.changeStateSuggestion({ id: this.suggestion.id, state: 'validate' })
+      if (confirm('Voulez-vous verrouiller cette suggestion ?')) {
+        this.changeStateSuggestion({ id: this.suggestion.id, state: 'validate' })
+      }
     },
     sendEmail() {
       const windowRef = window.open(`mailto:${this.suggestion.user_email}`, '_blank');
