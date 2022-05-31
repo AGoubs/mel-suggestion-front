@@ -1,10 +1,19 @@
 <template>
   <div id="moderator_commands" v-if="$moderator">
+
     <hr class="mb-2">
-    Suggestion ajoutée par : <a :href="`mailto:${suggestion.user_email}`" target="_blank" class="font-bold"
-      @click.stop>{{
-          suggestion.user_email
-      }}</a>
+    <div class="flex justify-between mt-3">
+      <div>
+
+        Suggestion ajoutée par : <a :href="`mailto:${suggestion.user_email}`" target="_blank" class="font-bold"
+          @click.stop>{{
+              suggestion.user_email
+          }}</a>
+      </div>
+      <div>
+        Le : {{ moment(String(suggestion.updated_at)).format('MM/DD/YYYY') }}
+      </div>
+    </div>
     <div class="flex justify-between mt-3" v-if="suggestion.state == 'moderate'">
       <button @click.stop="refuseSuggestion"
         class="text-red-500 border border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600 font-bold uppercase text-xs px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
@@ -40,6 +49,15 @@
         Verrouiller
       </button>
     </div>
+
+    <div class="flex justify-between mt-3" v-if="suggestion.state == 'validate'">
+      <button @click.stop="refuseSuggestion"
+        class="text-red-500 border border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600 font-bold uppercase text-xs px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        type="button">
+        <i class="fa-solid fa-times mr-1"></i>
+        Refuser
+      </button>
+    </div>
   </div>
 </template>
 
@@ -52,10 +70,9 @@ export default {
     'suggestion'
   ],
   methods: {
-    ...mapActions(['changeStateSuggestion','deleteSuggestion']),
+    ...mapActions(['changeStateSuggestion', 'deleteSuggestion']),
     refuseSuggestion() {
-    if (confirm('Voulez-vous refuser cette suggestion ?')) {
-        // this.$emit("delete-suggestion", this.suggestion.id);
+      if (confirm('Voulez-vous refuser cette suggestion ?')) {
         this.deleteSuggestion(this.suggestion.id)
       }
     },
@@ -66,7 +83,7 @@ export default {
       this.changeStateSuggestion({ id: this.suggestion.id, state: 'vote' })
     },
     lockSuggestion() {
-       this.changeStateSuggestion({ id: this.suggestion.id, state: 'validate' })
+      this.changeStateSuggestion({ id: this.suggestion.id, state: 'validate' })
     }
   },
 }

@@ -27,6 +27,7 @@
 <script>
 import Suggestion from "./Suggestion";
 import CreateSuggestion from "./CreateSuggestion";
+
 export default {
   name: "Suggestions",
   props: {
@@ -68,7 +69,7 @@ export default {
     },
     searchValue(s) {
       this.search = s;
-    },   
+    },
     showCreateSuggestion() {
       this.create = !this.create
     },

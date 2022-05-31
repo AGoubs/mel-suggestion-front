@@ -12,9 +12,7 @@
           <div v-html="suggestion.description"></div>
         </div>
       </div>
-      <ModeratorCommands :suggestion="suggestion" @delete-suggestion="refuseSuggestion"
-        @validate-suggestion="validateSuggestion" @modify-suggestion="modifySuggestion"
-        @lock-suggestion="lockSuggestion" />
+      <ModeratorCommands :suggestion="suggestion" />
     </div>
   </div>
 </template>
@@ -26,20 +24,6 @@ export default {
   props: [
     'suggestion', 'active'
   ],
-  methods: {
-    refuseSuggestion(id) {
-      this.$emit("delete-suggestion", id);
-    },
-    modifySuggestion(id) {
-      this.$emit("modify-suggestion", id);
-    },
-    validateSuggestion(id) {
-      this.$emit("validate-suggestion", id)
-    },
-    lockSuggestion(id) {
-      this.$emit("lock-suggestion", id)
-    }
-  },
   components: {
     ModeratorCommands
   }

@@ -47,6 +47,7 @@
 <script>
 import { VueEditor } from "vue2-editor";
 import { mapActions } from "vuex";
+
 export default {
   name: "CreateSuggestion",
   props: {
@@ -95,13 +96,11 @@ export default {
 
       this.$root.$emit('reset-search')
       this.$root.$emit('sort-suggestion-active', 'updated_at')
-      // this.$emit("add-suggestion", newSuggestion);
     },
   },
   components: {
     VueEditor
-  },
-  emits: ['add-suggestion']
+  }
 };
 </script>
 
