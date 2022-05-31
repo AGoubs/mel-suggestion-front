@@ -12,16 +12,44 @@
           <div v-html="suggestion.description"></div>
         </div>
       </div>
+      <hr class="mb-2">
+      <div id="moderator_commands" v-if="$moderator">
+        <div class="flex justify-between mt-3">
+          <div>
+            Suggestion ajoutée par : <a href="#" class="font-bold" @click.stop="sendEmail">{{
+                suggestion.user_email
+            }}</a>
+          </div>
+          <div>
+            Le : <span class="font-bold"> {{ suggestion.updated_at | formatDate }} </span>
+          </div>
+        </div>
+      </div>
+      <div v-else>
+        <p>
+          Suggestion ajoutée le : <span class="font-bold"> {{ suggestion.updated_at | formatDate }} </span>
+        </p>
+      </div>
     </div>
+
   </div>
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
   name: "Accordion",
   props: [
     'suggestion', 'active'
-  ]
+  ],
+  filters: {
+    formatDate: function (value) {
+      if (value) {
+        return moment(String(value)).format('MM/DD/YYYY')
+      }
+    }
+  },
 }
 </script>
 
