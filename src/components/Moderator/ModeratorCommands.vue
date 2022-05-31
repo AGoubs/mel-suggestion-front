@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'ModeratorCommands',
@@ -56,12 +56,12 @@ export default {
     'suggestion'
   ],
   methods: {
-    ...mapActions(['changeStateSuggestion', 'deleteSuggestion']),
+    ...mapActions(['changeStateSuggestion', 'deleteSuggestion', 'fetchText']),
     refuseSuggestion() {
       if (confirm('Voulez-vous refuser cette suggestion ?')) {
-        this.deleteSuggestion(this.suggestion.id)
+        // this.deleteSuggestion(this.suggestion.id)
         if (confirm('Envoyer un mail de refus ?')) {
-          this.sendEmail();
+          this.sendEmail(this.allText.mail_subject.replace('%%title%%',this.suggestion.title), this.allText.mail_body);
         }
       }
     },
@@ -78,8 +78,8 @@ export default {
     modifySuggestion() {
       this.sendEmail();
     },
-    sendEmail() {
-      const windowRef = window.open(`mailto:${this.suggestion.user_email}`, '_blank');
+    sendEmail(subject = '', body = '') {
+      const windowRef = window.open(`mailto:${this.suggestion.user_email}?subject=${subject}&body=${body}`, '_blank');
       windowRef.focus();
       setTimeout(function () {
         if (!windowRef.document.hasFocus()) {
@@ -87,7 +87,8 @@ export default {
         }
       }, 500);
     }
-  }
+  },
+  computed: mapGetters(['allText']),
 }
 </script>
 
