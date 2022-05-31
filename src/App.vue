@@ -4,7 +4,7 @@
 
     <body class="flex items-center justify-center py-8">
       <div class="w-full max-w-4xl px-4">
-        <Header title="Faire une suggestion" />
+        <Header :title="title" />
         <div class="border rounded-lg border pb-6 border-gray-300">
           <div class="flex items-center border-b border-gray-300 justify-between px-6 py-3">
             <SortingButton />
@@ -37,6 +37,7 @@ import SortingButton from "./components/SortingButton";
 import Search from "./components/Search";
 import Suggestions from "./components/Suggestions";
 import Preloader from './components/Preloader.vue'
+import axios from 'axios';
 
 export default {
   name: "App",
@@ -44,14 +45,23 @@ export default {
     return {
       suggestions: [],
       loading: false,
-      errored: false
+      errored: false,
+      title: "Module de suggestion"
     };
   },
   created() {
-    this.fetchSuggestions();
+    this.fetchSuggestions(),
+      this.getText()
   },
   methods: {
-    ...mapActions(['fetchSuggestions'])
+    ...mapActions(['fetchSuggestions']),
+    getText() {
+      axios
+        .get("http://127.0.0.1:8000/api/text")
+        .then((response) => {
+          this.title = response.data.title
+        })
+    }
   },
   components: {
     Header,
@@ -60,6 +70,6 @@ export default {
     Suggestions,
     Preloader
   },
-  computed: mapGetters(['allSuggestions','loadingStatus']),
+  computed: mapGetters(['allSuggestions', 'loadingStatus']),
 };
 </script>
