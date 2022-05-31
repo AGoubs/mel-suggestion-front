@@ -50,6 +50,17 @@ export default {
       }
     }
   },
+  methods: {
+    sendEmail() {
+      const windowRef = window.open(`mailto:${this.suggestion.user_email}`, '_blank');
+      windowRef.focus();
+      setTimeout(function () {
+        if (!windowRef.document.hasFocus()) {
+          windowRef.close();
+        }
+      }, 500);
+    }
+  }
 }
 </script>
 
