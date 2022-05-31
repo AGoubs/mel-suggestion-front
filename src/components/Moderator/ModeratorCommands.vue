@@ -59,7 +59,7 @@ export default {
     ...mapActions(['changeStateSuggestion', 'deleteSuggestion', 'fetchText']),
     refuseSuggestion() {
       if (confirm('Voulez-vous refuser cette suggestion ?')) {
-        // this.deleteSuggestion(this.suggestion.id)
+        this.deleteSuggestion(this.suggestion.id)
         if (confirm('Envoyer un mail de refus ?')) {
           this.sendEmail(this.allText.mail_subject.replace('%%title%%',this.suggestion.title), this.allText.mail_body);
         }
@@ -79,7 +79,7 @@ export default {
       this.sendEmail();
     },
     sendEmail(subject = '', body = '') {
-      const windowRef = window.open(`mailto:${this.suggestion.user_email}?subject=${subject}&body=${body}`, '_blank');
+      const windowRef = window.open(`mailto:${this.suggestion.user_email}?subject=${subject}&body=${body}`);
       windowRef.focus();
       setTimeout(function () {
         if (!windowRef.document.hasFocus()) {
