@@ -15,7 +15,7 @@
                 text-gray-700
                 leading-tight
                 focus:outline-none focus:shadow-outline
-              " id="title" v-model="localSuggestion.title" type="text" placeholder="Titre..."
+              " id="title" v-model="localSuggestion.title" type="text" placeholder="Titre..." maxlength="255"
         :class="titleError ? 'border-red-500' : ''" />
       <span class="text-red-500" v-show="titleError">Merci de renseigner un titre</span>
     </div>

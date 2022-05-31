@@ -21,10 +21,10 @@
             </div>
             <p>Votes</p>
           </div>
-          <div class="pl-3 w-full">
+          <div class="pl-3">
             <div class="flex items-center text-sm leading-none">
-              <p class="font-semibold text-gray-800">
-                {{ suggestion.title }}
+              <p class="font-semibold text-gray-800 overflow-hidden truncate custom_width">
+                {{ suggestion.title | strippedContent }}
               </p>
             </div>
             <div :class="description ? 'invisible' : 'visible'" class="overflow-hidden truncate custom_width">
@@ -38,8 +38,9 @@
           <i v-show="!$moderator" class="fa-solid fa-trash mt-4 hover:text-red-500 cursor-pointer"
             @click.stop="onDelete"></i>
         </div>
+
       </div>
-      <div v-show="showSuggestion">
+      <div v-if="showSuggestion">
         <div class="flex justify-end">
           <i class="fa-solid fa-edit mb-4 hover:text-blue-500 cursor-pointer" @click="toggleSuggestion"></i>
         </div>
@@ -53,6 +54,7 @@
 
 <script>
 import axios from "axios";
+import moment from 'moment';
 import { mapActions } from "vuex";
 
 import UpdateSuggestion from "./UpdateSuggestion";
@@ -78,6 +80,11 @@ export default {
       div.innerHTML = value
       const text = div.textContent || div.innerText || ''
       return text
+    },
+    formatDate: function (value) {
+      if (value) {
+        return moment(String(value)).format('MM/DD/YYYY')
+      }
     }
   },
   methods: {
@@ -127,7 +134,7 @@ export default {
       this.toggleSuggestion();
       this.modifiedSuggestion = true;
     },
-   
+
     toggleSuggestion() {
       this.showSuggestion = !this.showSuggestion
     },
