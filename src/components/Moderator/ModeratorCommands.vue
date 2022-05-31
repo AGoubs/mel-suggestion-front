@@ -1,6 +1,6 @@
 <template>
   <div id="moderator_commands" v-if="$moderator">
-    <hr class="mb-2">
+    <!-- <hr class="mb-2">
     <div class="flex justify-between mt-3">
       <div>
 
@@ -11,7 +11,7 @@
       <div>
         Le : <span class="font-bold"> {{ suggestion.updated_at | formatDate }} </span>
       </div>
-    </div>
+    </div> -->
     <div class="flex justify-between mt-3" v-if="suggestion.state == 'moderate'">
       <button @click.stop="refuseSuggestion"
         class="text-red-500 border border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600 font-bold uppercase text-xs px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"

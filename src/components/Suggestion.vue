@@ -32,14 +32,18 @@
             </div>
           </div>
         </div>
-        <div id="user-actions" v-show="(suggestion.my_suggestion || $moderator) && suggestion.state != 'validate'">
-          <i class="fa-solid fa-edit mb-4 hover:text-blue-500 cursor-pointer" @click="toggleSuggestion"></i>
+        <div id="user-actions"
+          v-show="(suggestion.my_suggestion || $moderator) && suggestion.state == 'moderate' ">
+          <i class="fa-solid fa-edit mb-4 hover:text-blue-500 cursor-pointer" @click="toggleSuggestion"
+            title="Éditer la suggestion"></i>
           <br>
           <i v-show="!$moderator" class="fa-solid fa-trash mt-4 hover:text-red-500 cursor-pointer"
-            @click.stop="onDelete"></i>
+            title="Supprimer la suggestion" @click.stop="onDelete"></i>
         </div>
-
       </div>
+      
+      <ModeratorCommands :suggestion="suggestion" />
+
       <div v-if="showSuggestion">
         <div class="flex justify-end">
           <i class="fa-solid fa-edit mb-4 hover:text-blue-500 cursor-pointer" @click="toggleSuggestion"></i>
@@ -56,6 +60,7 @@
 import axios from "axios";
 import moment from 'moment';
 import { mapActions } from "vuex";
+import ModeratorCommands from "./Moderator/ModeratorCommands";
 
 import UpdateSuggestion from "./UpdateSuggestion";
 import Accordion from "./Accordion";
@@ -144,7 +149,9 @@ export default {
   },
   components: {
     UpdateSuggestion,
-    Accordion
+    Accordion,
+    ModeratorCommands
+
   },
 };
 </script>

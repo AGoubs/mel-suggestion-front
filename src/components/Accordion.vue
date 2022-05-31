@@ -12,21 +12,16 @@
           <div v-html="suggestion.description"></div>
         </div>
       </div>
-      <ModeratorCommands :suggestion="suggestion" />
     </div>
   </div>
 </template>
 
 <script>
-import ModeratorCommands from "./Moderator/ModeratorCommands";
 export default {
   name: "Accordion",
   props: [
     'suggestion', 'active'
-  ],
-  components: {
-    ModeratorCommands
-  }
+  ]
 }
 </script>
 
