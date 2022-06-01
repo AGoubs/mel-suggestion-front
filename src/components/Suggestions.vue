@@ -18,7 +18,7 @@
           une suggestion</button>
       </div>
       <div v-show="create">
-        <CreateSuggestion @add-suggestion="addSuggestion" :titleprops=search />
+        <CreateSuggestion :titleprops=search />
       </div>
     </div>
   </div>

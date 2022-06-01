@@ -58,7 +58,7 @@ const actions = {
     }).then((response) => {
       console.log(response.data);
       commit('updateSuggestion', response.data)
-      this._vm.$toast.success("Suggestion validée avec succès !");
+      this._vm.$toast.success("Suggestion modifiée avec succès !");
     }).catch((error) => {
       this._vm.$toast.error("Erreur lors de la validation de la suggestion");
       console.log(error);
